@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inventory Demand Forecast</title>
+    <style>
+      :root {
+        --bg: #0f1b1a;
+        --bg-2: #1a2a27;
+        --accent: #e8b86d;
+        --accent-2: #7cd7c1;
+        --text: #f4f2ed;
+        --muted: #c7c2b9;
+        --card: #152321;
+        --shadow: rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        background: radial-gradient(1200px 800px at 10% 10%, #203634, var(--bg));
+        font-family: "Georgia", "Times New Roman", serif;
+        min-height: 100vh;
+      }
+
+      .hero {
+        padding: 48px 20px 24px;
+        text-align: center;
+      }
+
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 3.5vw, 3rem);
+        letter-spacing: 0.5px;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .shell {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px 48px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+      }
+
+      @media (max-width: 900px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: linear-gradient(160deg, var(--card), #0f1a18);
+        border: 1px solid #223735;
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: 0 24px 50px var(--shadow);
+      }
+
+      .card h2 {
+        margin-top: 0;
+        margin-bottom: 16px;
+        font-size: 1.25rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      @media (max-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        background: #0c1514;
+        color: var(--text);
+        border: 1px solid #2a4642;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 0.95rem;
+      }
+
+      input:focus,
+      select:focus {
+        outline: 2px solid var(--accent-2);
+        border-color: var(--accent-2);
+      }
+
+      .cta {
+        margin-top: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        background: linear-gradient(120deg, var(--accent), #f5d28a);
+        color: #2b1b00;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 10px 25px rgba(232, 184, 109, 0.35);
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      .note {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .result {
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px dashed #2a4642;
+        background: rgba(12, 21, 20, 0.7);
+        min-height: 70px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        background: rgba(124, 215, 193, 0.15);
+        border: 1px solid rgba(124, 215, 193, 0.35);
+        border-radius: 999px;
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <div class="badge">Inventory Forecasting Dashboard</div>
+      <h1>Predict Daily Units Sold</h1>
+      <p>Enter store, product, pricing, and context to estimate demand.</p>
+    </section>
+
+    <main class="shell">
+      <div class="card">
+        <h2>Request Inputs</h2>
+        <form id="predict-form">
+          <div class="grid">
+            <div>
+              <label for="store">Store ID</label>
+              <input id="store" placeholder="S001" />
+            </div>
+            <div>
+              <label for="product">Product ID</label>
+              <input id="product" placeholder="P001" />
+            </div>
+            <div>
+              <label for="category">Category</label>
+              <select id="category">
+                <option value="Electronics">Electronics</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Home">Home</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Toys">Toys</option>
+              </select>
+            </div>
+            <div>
+              <label for="region">Region</label>
+              <select id="region">
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+              </select>
+            </div>
+            <div>
+              <label for="inventory">Inventory Level</label>
+              <input id="inventory" type="number" placeholder="120" />
+            </div>
+            <div>
+              <label for="ordered">Units Ordered</label>
+              <input id="ordered" type="number" placeholder="80" />
+            </div>
+            <div>
+              <label for="forecast">Demand Forecast</label>
+              <input id="forecast" type="number" step="0.01" placeholder="140.5" />
+            </div>
+            <div>
+              <label for="price">Price</label>
+              <input id="price" type="number" step="0.01" placeholder="49.99" />
+            </div>
+            <div>
+              <label for="discount">Discount (%)</label>
+              <input id="discount" type="number" placeholder="10" />
+            </div>
+            <div>
+              <label for="weather">Weather Condition</label>
+              <select id="weather">
+                <option value="Sunny">Sunny</option>
+                <option value="Rainy">Rainy</option>
+                <option value="Cloudy">Cloudy</option>
+                <option value="Snowy">Snowy</option>
+              </select>
+            </div>
+            <div>
+              <label for="holiday">Holiday/Promotion (0/1)</label>
+              <input id="holiday" type="number" placeholder="0" />
+            </div>
+            <div>
+              <label for="competitor">Competitor Pricing</label>
+              <input id="competitor" type="number" step="0.01" placeholder="52.00" />
+            </div>
+            <div>
+              <label for="seasonality">Seasonality</label>
+              <select id="seasonality">
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+                <option value="Autumn">Autumn</option>
+                <option value="Winter">Winter</option>
+              </select>
+            </div>
+            <div>
+              <label for="dow">Day of Week</label>
+              <input id="dow" type="number" placeholder="2" />
+            </div>
+            <div>
+              <label for="month">Month</label>
+              <input id="month" type="number" placeholder="7" />
+            </div>
+            <div>
+              <label for="day">Day</label>
+              <input id="day" type="number" placeholder="15" />
+            </div>
+            <div>
+              <label for="weekend">Is Weekend (0/1)</label>
+              <input id="weekend" type="number" placeholder="0" />
+            </div>
+          </div>
+
+          <div class="cta">
+            <button type="submit">Predict Units Sold</button>
+            <span class="note">Connect this form to the /predict API endpoint.</span>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Prediction</h2>
+        <p class="note">Output will appear here after submission.</p>
+        <div class="result" id="result">No prediction yet.</div>
+      </div>
+    </main>
+
+    <script>
+      const form = document.getElementById("predict-form");
+      const result = document.getElementById("result");
+
+      const value = (id) => document.getElementById(id).value;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        result.textContent = "Predicting...";
+
+        const payload = {
+          Store_ID: value("store"),
+          Product_ID: value("product"),
+          Category: value("category"),
+          Region: value("region"),
+          Inventory_Level: Number(value("inventory")),
+          Units_Ordered: Number(value("ordered")),
+          Demand_Forecast: Number(value("forecast")),
+          Price: Number(value("price")),
+          Discount: Number(value("discount")),
+          Weather_Condition: value("weather"),
+          Holiday_Promotion: Number(value("holiday")),
+          Competitor_Pricing: Number(value("competitor")),
+          Seasonality: value("seasonality"),
+          day_of_week: Number(value("dow")),
+          month: Number(value("month")),
+          day: Number(value("day")),
+          is_weekend: Number(value("weekend")),
+        };
+
+        try {
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || "Prediction failed");
+          }
+
+          const data = await response.json();
+          result.textContent = `Predicted Units Sold: ${data.prediction.toFixed(2)}`;
+        } catch (err) {
+          result.textContent = `Error: ${err.message}`;
+        }
+      });
+    </script>
+  </body>
+</html>
