@@ -13,3 +13,4 @@ shap>=0.45
 
 # Dev
 pytest>=7.4
+httpx>=0.26
