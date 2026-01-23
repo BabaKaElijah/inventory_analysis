@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-from predict_pipeline import predict
+from predict_pipeline import explain, predict
 
 
 st.set_page_config(page_title="Inventory Demand Forecast", layout="centered")
@@ -73,6 +73,9 @@ if submitted:
         df = pd.DataFrame([payload])
         prediction = float(predict(df)[0])
         st.success(f"Predicted Units Sold: {prediction:.2f}")
+        st.subheader("Top Feature Contributions")
+        contributions = explain(df, top_n=10)
+        st.dataframe(contributions, use_container_width=True)
     except FileNotFoundError:
         st.error("Model not found. Train the model first.")
     except Exception as exc:

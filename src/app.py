@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import pandas as pd
 
 from logger import get_logger
-from predict_pipeline import predict
+from predict_pipeline import predict, explain
 
 
 app = FastAPI(title="Inventory Analysis API")
@@ -75,4 +75,20 @@ def predict_units_sold(payload: PredictRequest):
         raise HTTPException(status_code=404, detail="Model not found. Train the model first.")
     except Exception as exc:
         logger.exception("Prediction failed")
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.post("/explain")
+def explain_prediction(payload: PredictRequest, top_n: int = 10):
+    try:
+        features = payload.to_feature_dict()
+        df = pd.DataFrame([features])
+        preds = predict(df)
+        prediction = float(preds[0])
+        contributions = explain(df, top_n=top_n)
+        return {"prediction": prediction, "contributions": contributions}
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Model not found. Train the model first.")
+    except Exception as exc:
+        logger.exception("Explain failed")
         raise HTTPException(status_code=500, detail=str(exc))

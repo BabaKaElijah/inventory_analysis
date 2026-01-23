@@ -51,6 +51,7 @@ def train_model(
     df: pd.DataFrame,
     n_estimators: int = 200,
     random_state: int = 42,
+    return_data: bool = False,
 ):
     target = "Units Sold"
     features = [
@@ -115,4 +116,6 @@ def train_model(
 
     save_best_model(pipeline, "mae", float(mae))
     logger.info("Trained model with MAE %s", mae)
+    if return_data:
+        return pipeline, mae, X_test, y_test
     return pipeline, mae
