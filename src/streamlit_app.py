@@ -73,7 +73,6 @@ if submitted:
         df = pd.DataFrame([payload])
         prediction = float(predict(df)[0])
         st.success(f"Predicted Units Sold: {prediction:.2f}")
-
         st.subheader("Top Feature Contributions")
         contributions = explain(df, top_n=10)
         st.dataframe(contributions, use_container_width=True)
