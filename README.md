@@ -1,4 +1,5 @@
 # Inventory Demand Forecasting
+[![CI](https://github.com/BabaKaElijah/inventory_analysis/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BabaKaElijah/inventory_analysis/actions/workflows/ci.yml)
 
 End-to-end inventory analytics project that predicts daily units sold and provides explainability, evaluation reports, and production-ready serving via API and Streamlit.
 
@@ -9,7 +10,7 @@ End-to-end inventory analytics project that predicts daily units sold and provid
 - Includes automated tests, CI workflow, and Docker support
 
 ## Highlights
-- Pipeline: ingestion → transformation → training → evaluation
+- Pipeline: ingestion -> transformation -> training -> evaluation
 - Evaluation reports by store, product, category, and region
 - FastAPI prediction and explanation endpoints
 - Streamlit UI for interactive predictions
@@ -25,22 +26,22 @@ End-to-end inventory analytics project that predicts daily units sold and provid
 ## Project Structure
 ```
 .
-├── artifacts/
-├── data/
-├── src/
-│   ├── app.py
-│   ├── data_ingestion.py
-│   ├── data_transformation.py
-│   ├── model_evaluation.py
-│   ├── model_pipeline.py
-│   ├── model_trainer.py
-│   ├── predict_pipeline.py
-│   └── streamlit_app.py
-├── templates/
-├── tests/
-├── docker-compose.yml
-├── Dockerfile
-└── requirements.txt
+|-- artifacts/
+|-- data/
+|-- src/
+|   |-- app.py
+|   |-- data_ingestion.py
+|   |-- data_transformation.py
+|   |-- model_evaluation.py
+|   |-- model_pipeline.py
+|   |-- model_trainer.py
+|   |-- predict_pipeline.py
+|   `-- streamlit_app.py
+|-- templates/
+|-- tests/
+|-- docker-compose.yml
+|-- Dockerfile
+`-- requirements.txt
 ```
 
 ## Quickstart (Local)
