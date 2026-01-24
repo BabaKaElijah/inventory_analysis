@@ -108,10 +108,14 @@ Generated in `artifacts/reports/`:
 - `metrics_by_region.csv`
 
 ## Screenshots
-Add screenshots here after running the app:
-- `docs/screenshots/streamlit_home.png`
-- `docs/screenshots/prediction_result.png`
-- `docs/screenshots/mlflow_runs.png`
+Streamlit Home:
+![Streamlit Home](docs/screenshots/streamlit_home.png)
+
+Prediction Result:
+![Prediction Result](docs/screenshots/prediction_results.png)
+
+MLflow Runs:
+![MLflow Runs](docs/screenshots/mlflow_runs.png)
 
 ## Notes
 - `Demand Forecast` is included as a feature and is highly predictive in this dataset.
